@@ -22,7 +22,7 @@ public class FondoPanel extends JPanel{
     @Override   
     public void paintComponent(Graphics g){     
            
-          g.setColor(Color.red);
+          g.setColor(new Color(137,53,255));
           g.fillOval(250, 120, 15, 15);
           g.fillOval(250, 210, 15, 15);
           g.fillOval(210, 280, 15, 15);
@@ -45,6 +45,8 @@ public class FondoPanel extends JPanel{
           g.fillOval(1145, 420, 15, 15);
           g.fillOval(1060, 540, 15, 15);
           g.fillOval(1165, 530, 15, 15);
+          
+          
     } 
     
     @Override

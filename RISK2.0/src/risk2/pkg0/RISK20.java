@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package risk2.pkg0;
+import Controlador.Controlador;
+import Modelo.Modelo;
 import Vista.Ventana;
 
 /**
@@ -17,7 +19,11 @@ public class RISK20 {
      */
     public static void main(String[] args) {
         
-        Ventana p = new Ventana();
+        Ventana v = new Ventana();
+        
+        Modelo m = new Modelo(v);
+        
+        Controlador c = new Controlador(m,v);
         
     }
     
