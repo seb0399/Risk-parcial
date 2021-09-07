@@ -5,9 +5,11 @@
  */
 package Vista;
 
+import Modelo.Territorio;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
@@ -18,34 +20,39 @@ import javax.swing.JPanel;
 public class FondoPanel extends JPanel{
     
     private Image imagen;
+    private ArrayList<Territorio> j1;
+    private ArrayList<Territorio> j2;
+    
+    public FondoPanel(){
+        this.setSize(1280,720);
+        this.setVisible(true);
+    }
     
     @Override   
     public void paintComponent(Graphics g){     
-           
-          g.setColor(new Color(137,53,255));
-          g.fillOval(250, 120, 15, 15);
-          g.fillOval(250, 210, 15, 15);
-          g.fillOval(210, 280, 15, 15);
-          g.fillOval(290, 460, 15, 15);
-          g.fillOval(350, 400, 15, 15);
-          g.fillOval(320, 336, 15, 15);
-          g.fillOval(460, 60, 15, 15);
-          g.fillOval(545, 110, 15, 15);
-          g.fillOval(515, 170, 15, 15);
-          g.fillOval(635, 110, 15, 15);
-          g.fillOval(625, 215, 15, 15);
-          g.fillOval(910, 125, 15, 15);
-          g.fillOval(920, 235, 15, 15);
-          g.fillOval(910, 335, 15, 15); 
-          g.fillOval(780, 305, 15, 15);
-          g.fillOval(620, 365, 15, 15);
-          g.fillOval(720, 455, 15, 15);
-          g.fillOval(675, 545, 15, 15);
-          g.fillOval(1015, 425, 15, 15);
-          g.fillOval(1145, 420, 15, 15);
-          g.fillOval(1060, 540, 15, 15);
-          g.fillOval(1165, 530, 15, 15);
-          
+
+        for(int i=0; i<j1.size();i++)
+        {
+            g.setColor(new Color(j1.get(i).getX(),j1.get(i).getY(),j1.get(i).getZ()));
+            g.fillOval(j1.get(i).getCoordenadax(), j1.get(i).getCoordenaday(), 25, 25);
+            g.setColor(Color.black);
+            g.drawString(""+j1.get(i).getNumerodesoldados(), j1.get(i).getCoordenadax()+6, j1.get(i).getCoordenaday()+14);
+            g.setColor(Color.RED);
+             g.setFont(new java.awt.Font("Maiandra GD", 1, 11));
+            g.drawString(""+j1.get(i).getId(), j1.get(i).getCoordenadax()-5, j1.get(i).getCoordenaday()-2);
+        }
+        
+        for(int i=0; i<j2.size();i++)
+        {
+            g.setColor(new Color(j2.get(i).getX(),j2.get(i).getY(),j2.get(i).getZ()));
+            g.fillOval(j2.get(i).getCoordenadax(), j2.get(i).getCoordenaday(), 25, 25);
+            g.setColor(Color.black);
+            g.drawString(""+j2.get(i).getNumerodesoldados(), j2.get(i).getCoordenadax()+6, j2.get(i).getCoordenaday()+14);
+             g.setColor(Color.RED);
+             g.setFont(new java.awt.Font("Maiandra GD", 1, 11));
+            g.drawString(""+j2.get(i).getId(), j2.get(i).getCoordenadax()-5, j2.get(i).getCoordenaday()-2);
+        }
+         
           
     } 
     
@@ -57,5 +64,21 @@ public class FondoPanel extends JPanel{
   
           super.paint(g);
     }
-    
+
+    public ArrayList<Territorio> getJ1() {
+        return j1;
+    }
+
+    public void setJ1(ArrayList<Territorio> j1) {
+        this.j1 = j1;
+    }
+
+    public ArrayList<Territorio> getJ2() {
+        return j2;
+    }
+
+    public void setJ2(ArrayList<Territorio> j2) {
+        this.j2 = j2;
+    }
+
 }

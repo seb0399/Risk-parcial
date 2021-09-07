@@ -13,12 +13,61 @@ import java.util.ArrayList;
  */
 public class Territorio {
     
+    private int id;
+    private int coordenadax, coordenaday;
+    private int x,y,z;
     private int numerodesoldados;
     private boolean visita=false;
     ArrayList<Territorio> vecinos =  new ArrayList<Territorio>();
 
-    public Territorio(int numerodesoldados) {
+    public Territorio(int id, int numerodesoldados) {
+        this.id = id;
         this.numerodesoldados = numerodesoldados;
+    }
+    
+    public void coordenadas(int coordenadax, int coordenaday){
+        this.coordenadax = coordenadax;
+        this.coordenaday = coordenaday;
+    }
+
+    public int getCoordenadax() {
+        return coordenadax;
+    }
+
+    public int getCoordenaday() {
+        return coordenaday;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getZ() {
+        return z;
+    }
+
+    public void setZ(int z) {
+        this.z = z;
     }
 
     public int getNumerodesoldados() {
@@ -49,5 +98,6 @@ public class Territorio {
     public void agregarvecino(Territorio nodito){
         vecinos.add(nodito);
         nodito.vecinos.add(this);
-    }
+    }    
+    
 }

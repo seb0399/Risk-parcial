@@ -25,6 +25,8 @@ public class RISK20 {
         
         Controlador c = new Controlador(m,v);
         
+        v.setController(c);
+        
     }
     
 }

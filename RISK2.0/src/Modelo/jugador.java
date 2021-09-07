@@ -54,4 +54,14 @@ public class jugador {
         this.nodos = nodos;
     }
 
+    public void color(int i){
+        this.nodos.get(i).setX(this.x);
+        this.nodos.get(i).setY(this.y);
+        this.nodos.get(i).setZ(this.z);
+    }
+    
+    public void añadirterritorio(Territorio t){
+        nodos.add(t);
+    }
+    
 }

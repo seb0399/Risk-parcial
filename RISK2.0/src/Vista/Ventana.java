@@ -6,7 +6,13 @@
 package Vista;
 
 import Controlador.Controlador;
+import java.awt.Color;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -14,17 +20,26 @@ import javax.swing.JFrame;
  */
 public class Ventana extends JFrame{
     
-    private FondoPanel fondo = new FondoPanel();
-
-   
+    public FondoPanel fondo = new FondoPanel();
+    public JPanel panel = new JPanel();
+    public JLabel label1 = new JLabel("Soldados disponibles"); 
+    public JLabel label2 = new JLabel("");
+    public JLabel label3 = new JLabel("Indice del territorio a fortalecer: ");
+    public JLabel label4 = new JLabel("Cantidad de soldados a ingresar: ");
+    public JButton btn1 = new JButton("Planificar");
+    public JButton btn2 = new JButton("Atacar");
+    public JButton btn3 = new JButton("Fortificar");
+    public JButton btn4 = new JButton("Siguiente etapa");
+    public JTextField txt1 = new JTextField("hola");
+    public JTextField txt2 = new JTextField("hola2");
     private Controlador c;
     
     public Ventana(){
-        this.setContentPane(fondo);
-        this.setSize(1280,720);
+       // this.setContentPane(fondo);
+        this.setSize(1300,1000);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(null);
-        this.setTitle("Crazy Gorilla");
+        this.setTitle("Risk2.0");
         this.setVisible(true);
         this.initComponents();
        
@@ -32,26 +47,72 @@ public class Ventana extends JFrame{
     
     public void initComponents(){
         
-     
+        this.fondo.setBounds(0, 0, 1280, 720);
+        this.setVisible(true);
+        this.add(fondo);
+
+        this.label1.setBounds(60,60,200,20);
+        this.panel.add(label1);
         
+        this.label2.setBounds(270,60,90,20);
+        this.panel.add(label2);
+
+        this.label3.setBounds(60,100,200,20);
+        this.panel.add(label3);
+        this.txt1.setBounds(270,100,90,20);
+        this.panel.add(txt1);
+
+        this.label4.setBounds(60,140,200,20);
+        this.panel.add(label4);
+        this.txt2.setBounds(270,140,90,20);
+        this.panel.add(txt2);
+
+        this.btn1.setBounds(900, 60, 90, 20);
+        this.panel.add(btn1);
+
+        this.btn2.setBounds(900, 100, 90, 20);
+        this.panel.add(btn2);
+
+        this.btn3.setBounds(1000, 60, 90, 20);
+        this.panel.add(btn3);
+
+        this.btn4.setBounds(1000, 100, 90, 20);
+        this.panel.add(btn4);
+
+        this.panel.setBounds(0, 720, 1280, 280);
+        this.panel.setBackground(new Color(0,120,240));
+        this.setVisible(true);
+        this.add(panel);
     }
-     public void JPanel(){
-        
-    }
-   
-   
+
    
     public void setController(Controlador cont){
         this.c = cont;
-   
-    
+        this.btn1.addActionListener((ActionListener) this.c);
+        this.btn2.addActionListener((ActionListener) this.c);
+        this.btn3.addActionListener((ActionListener) this.c);
+        this.btn4.addActionListener((ActionListener) this.c);
     }
     
    public FondoPanel getPanel(){
        return this.fondo;
    }
+
+    public void updateLabel1(String s){
+        this.label1.setText(s);
+    }
+
+    public void updateLabel2(String s){
+        this.label2.setText(s);
+    }
     
+    public void updateLabel3(String s){
+        this.label3.setText(s);
+    }
     
+    public void updateLabel4(String s){
+        this.label4.setText(s);
+    }
     
 }
  
