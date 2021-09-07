@@ -3,28 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controlador;
-
-import Modelo.Nodo;
+package risk2.pkg0;
+import Controlador.Controlador;
+import Modelo.Modelo;
 import Vista.Ventana;
 
 /**
  *
- * @author Lenovo
+ * @author Carlos Rojas
  */
-public class Controlador {
+public class RISK20 {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-   
-        Ventana p = new Ventana();
-        Nodo n = new Nodo();
-        n.crearcoordenada();
-//        Modelo m = new Modelo(p);
-//        Controlador c = new Controlador(m,p);
-        p.setVisible(true);
-    }
         
+        Ventana v = new Ventana();
+        
+        Modelo m = new Modelo(v);
+        
+        Controlador c = new Controlador(m,v);
+        
+    }
+    
 }
