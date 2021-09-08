@@ -30,9 +30,10 @@ public class Ventana extends JFrame{
     public JButton btn2 = new JButton("Atacar");
     public JButton btn3 = new JButton("Fortificar");
     public JButton btn4 = new JButton("Siguiente etapa");
-    public JTextField txt1 = new JTextField("hola");
-    public JTextField txt2 = new JTextField("hola2");
+    public JTextField txt1 = new JTextField();
+    public JTextField txt2 = new JTextField();
     private Controlador c;
+
     
     public Ventana(){
        // this.setContentPane(fondo);
@@ -47,6 +48,7 @@ public class Ventana extends JFrame{
     
     public void initComponents(){
         
+        this.panel.setLayout(null);
         this.fondo.setBounds(0, 0, 1280, 720);
         this.setVisible(true);
         this.add(fondo);
@@ -84,7 +86,6 @@ public class Ventana extends JFrame{
         this.setVisible(true);
         this.add(panel);
     }
-
    
     public void setController(Controlador cont){
         this.c = cont;

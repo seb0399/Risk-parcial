@@ -24,6 +24,7 @@ public class FondoPanel extends JPanel{
     private ArrayList<Territorio> j2;
     
     public FondoPanel(){
+        this.setLayout(null);
         this.setSize(1280,720);
         this.setVisible(true);
     }
@@ -58,10 +59,9 @@ public class FondoPanel extends JPanel{
     
     @Override
     public void paint (Graphics g){
-        
+          g.clearRect(0, 0, 1280, 720);
           imagen = new ImageIcon(getClass().getResource("/imagenes/mapa.png")).getImage();
           g.drawImage(imagen, 0, 0, getWidth(), getHeight(),this );
-  
           super.paint(g);
     }
 

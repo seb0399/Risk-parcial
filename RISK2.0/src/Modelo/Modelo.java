@@ -25,25 +25,47 @@ public class Modelo {
         this.territorio = new ArrayList<>();
     }  
     
+    public void atacar(int territorioataca, int territoriodefiende){
+        
+    }
+    
     public void refuerzos(){
                
         int nuevossoldados = j1.getNodos().size();
         JOptionPane.showMessageDialog(null, "Has recibido "+nuevossoldados+" soldados");
-        ventana.updateLabel2(""+nuevossoldados);
+        ventana.label2.setText(""+nuevossoldados);
     }
     
     public void planificar(int reservas, int indice, int cantidad){
 
+        //condicion para identificar si el territorio ingresado le pertenece o no
+        boolean pertenece = false;
+        
         for(int i=0; i<j1.getNodos().size();i++)
         {
             if(j1.getNodos().get(i).getId()==indice)
             {
+                //se actualiza la cantidad de soldados del territorio
                 j1.getNodos().get(i).setNumerodesoldados(j1.getNodos().get(i).getNumerodesoldados()+cantidad);
+                
+                //el territorio si le pertenece
+                pertenece = true;
+                
+                //actualizacion de vista y panel
+                ventana.label2.setText(""+(reservas-cantidad));
                 ventana.getPanel().setJ1(j1.getNodos());
-                ventana.getPanel().repaint(); 
-                break;
+                ventana.getPanel().repaint();
+                
+                //se rompe el for
+                i=j1.getNodos().size();
+                
             }
         }   
+        
+        if(pertenece==false)
+        {
+            JOptionPane.showMessageDialog(null, "Ingrese un territorio que te pertenesca");
+        }
     }
     
     public void crearjugador(){
