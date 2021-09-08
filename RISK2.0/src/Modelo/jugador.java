@@ -64,4 +64,8 @@ public class jugador {
         nodos.add(t);
     }
     
+    public void remover(Territorio t){
+        nodos.remove(t);
+    }
+    
 }

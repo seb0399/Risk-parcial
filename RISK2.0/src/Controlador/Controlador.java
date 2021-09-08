@@ -31,6 +31,7 @@ public class Controlador implements ActionListener{
         this.vista.btn2.setEnabled(false);
         this.vista.btn3.setEnabled(false);
         this.vista.btn4.setEnabled(false);
+        this.vista.btn5.setEnabled(false);
         this.fase=1;
         modelo.creargrafo();
         modelo.refuerzos();
@@ -50,19 +51,24 @@ public class Controlador implements ActionListener{
                 if(reservas>=0)
                 {
                     //llamado al metodo planificar de la clase modelo
-                    modelo.planificar(Integer.parseInt(vista.label2.getText()), 
+                    boolean continuar = modelo.planificar(Integer.parseInt(vista.label2.getText()), 
                             Integer.parseInt(vista.txt1.getText()), Integer.parseInt(vista.txt2.getText()));
                     
-                    //si las reservas llegan a 0 se permite iniciar el siguiente paso
-                    if(reservas==0)
+                    if(continuar==false)
                     {
-                        fase=2;
+                        JOptionPane.showMessageDialog(null, "El territorio no le pertenece");
+                    }
+                    
+                    //si las reservas llegan a 0 se permite iniciar el siguiente paso
+                    if(reservas==0 && continuar==true)
+                    {
                         JOptionPane.showMessageDialog(null, "Buen trabajo, pulsa el boton siguiente para iniciar tu ataque");
                         vista.txt1.setText("");
                         vista.txt2.setText("");
                         this.vista.btn1.setEnabled(false);
                         this.vista.btn4.setEnabled(true);
                     }
+                    
                 }
                 else
                 {
@@ -87,7 +93,19 @@ public class Controlador implements ActionListener{
                 }
                 else
                 {
-                    modelo.atacar(Integer.parseInt(vista.txt1.getText()), Integer.parseInt(vista.txt2.getText()));
+                    boolean ganar = modelo.atacar(Integer.parseInt(vista.txt1.getText()), Integer.parseInt(vista.txt2.getText()));
+                    
+                    if(ganar==true)
+                    {
+                        this.vista.btn2.setEnabled(false);
+                        this.vista.label3.setText("Soldados en el territorio atacante");
+                        this.vista.label4.setText("Soldados en el territorio conquistado");
+                        this.vista.txt1.setText("");
+                        this.vista.txt2.setText("");
+                        this.vista.btn4.setEnabled(false);
+                        this.vista.btn5.setEnabled(true);
+                    }
+   
                 }
             }
             else 
@@ -96,9 +114,24 @@ public class Controlador implements ActionListener{
             }
             
         }
+        else if(e.getSource().equals(vista.btn5))
+        {
+            boolean desbloquear = modelo.balancear(Integer.parseInt(vista.txt1.getText()), Integer.parseInt(vista.txt2.getText()));
+            
+            if(desbloquear==true)
+            {
+                this.vista.btn5.setEnabled(false);
+                this.vista.label3.setText("Indice Territorio que ataca");
+                this.vista.label4.setText("Indice Territorio que defiende");
+                this.vista.txt1.setText("");
+                this.vista.txt2.setText("");
+                this.vista.btn2.setEnabled(true);
+                this.vista.btn4.setEnabled(true);
+            }
+        }
         else if(e.getSource().equals(vista.btn4))
         {
-            this.vista.btn4.setEnabled(false);
+            fase++;
             
             //leer declaracion de variables
             switch(fase)
@@ -119,12 +152,21 @@ public class Controlador implements ActionListener{
                 
                 //Fortificacion
                 case 3:
-                
+                    JOptionPane.showMessageDialog(null, "Etapa de fortificacion");
+                    this.vista.btn1.setEnabled(false);
+                    this.vista.btn2.setEnabled(false);
+                    this.vista.btn3.setEnabled(true);
+                    this.vista.btn5.setEnabled(false);
+                    vista.label1.setText("");
+                    vista.label2.setText("");
+                    vista.label3.setText("Mover de ");
+                    vista.label4.setText("Mover hacia ");
                 break;
                 
                 default:
                     JOptionPane.showMessageDialog(null, "Error no identificado");
                 break;
+                
             }
         }
     }

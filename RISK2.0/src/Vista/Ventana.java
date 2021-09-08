@@ -30,6 +30,7 @@ public class Ventana extends JFrame{
     public JButton btn2 = new JButton("Atacar");
     public JButton btn3 = new JButton("Fortificar");
     public JButton btn4 = new JButton("Siguiente etapa");
+    public JButton btn5 = new JButton("Balancear");
     public JTextField txt1 = new JTextField();
     public JTextField txt2 = new JTextField();
     private Controlador c;
@@ -80,6 +81,9 @@ public class Ventana extends JFrame{
 
         this.btn4.setBounds(1000, 100, 90, 20);
         this.panel.add(btn4);
+        
+        this.btn5.setBounds(1000, 140, 90, 20);
+        this.panel.add(btn5);
 
         this.panel.setBounds(0, 720, 1280, 280);
         this.panel.setBackground(new Color(0,120,240));
@@ -93,6 +97,7 @@ public class Ventana extends JFrame{
         this.btn2.addActionListener((ActionListener) this.c);
         this.btn3.addActionListener((ActionListener) this.c);
         this.btn4.addActionListener((ActionListener) this.c);
+        this.btn5.addActionListener((ActionListener) this.c);
     }
     
    public FondoPanel getPanel(){

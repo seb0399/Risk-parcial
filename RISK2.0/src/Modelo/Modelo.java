@@ -19,13 +19,91 @@ public class Modelo {
    private ArrayList<Territorio> territorio;
    jugador j1 = new jugador(105,205,255);
    jugador j2 = new jugador(252, 255, 51);
+   int indiceatar,indicedefender;
     
     public Modelo(Ventana v){
         this.ventana = v;    
         this.territorio = new ArrayList<>();
     }  
     
-    public void atacar(int territorioataca, int territoriodefiende){
+    public boolean balancear(int soldadot1, int soldadot2)
+    {
+        boolean desbloquear = false;
+        
+        if(soldadot1>j1.getNodos().get(indiceatar).getNumerodesoldados() || soldadot1<0 || 
+                soldadot2>j1.getNodos().get(indiceatar).getNumerodesoldados() || soldadot2<0 || 
+                (soldadot1+soldadot2)!=j1.getNodos().get(indiceatar).getNumerodesoldados() ||
+                soldadot1<=0 || soldadot2<=0)
+        {
+            JOptionPane.showMessageDialog(null, "Los valores ingresados no son un dato valido");
+        }
+        else
+        {
+            j1.getNodos().get(indiceatar).setNumerodesoldados(soldadot1);
+            j2.getNodos().get(indicedefender).setNumerodesoldados(soldadot2);
+            
+            j1.añadirterritorio(j2.getNodos().get(indicedefender));
+            j1.color(j1.getNodos().size()-1);
+            j2.remover(j2.getNodos().get(indicedefender));
+            
+            ventana.getPanel().setJ1(j1.getNodos());
+            ventana.getPanel().setJ2(j2.getNodos());
+            ventana.getPanel().repaint();
+            
+            desbloquear = true;
+        }
+        
+        return desbloquear;
+    }
+    
+    public boolean pelear(int indiceataca, int indicedefiende){
+                
+        boolean ganar = false;
+        boolean salir = false;
+        
+        do
+        {
+            int total = j1.getNodos().get(indiceataca).getNumerodesoldados()+j2.getNodos().get(indicedefiende).getNumerodesoldados();
+            int dado = (int) (Math.random()*(total-1)+1);
+      
+            if(dado<=j1.getNodos().get(indiceataca).getNumerodesoldados())
+            {
+                //ganan el que ataca
+                j2.getNodos().get(indicedefiende).setNumerodesoldados(j2.getNodos().get(indicedefiende).getNumerodesoldados()-1);
+            }
+            else
+            {
+                //gana el que defiende
+                j1.getNodos().get(indiceataca).setNumerodesoldados(j1.getNodos().get(indiceataca).getNumerodesoldados()-1);
+            }
+        
+            if(j1.getNodos().get(indiceataca).getNumerodesoldados()==1)
+            {
+                salir = true;
+                JOptionPane.showMessageDialog(null, "Has perdido todos tus soldados :C");
+            }
+            else if(j2.getNodos().get(indicedefiende).getNumerodesoldados()==0)
+            {
+                ganar=true;
+                salir = true;
+                JOptionPane.showMessageDialog(null, "Has conquistado el territorio");
+                this.indiceatar = indiceataca;
+                this.indicedefender = indicedefiende;
+            }
+                    
+        }while(salir==false);
+        
+        ventana.getPanel().setJ1(j1.getNodos());
+        ventana.getPanel().setJ2(j2.getNodos());
+        ventana.getPanel().repaint();
+        
+        return ganar;
+
+    }
+    
+    public boolean atacar(int territorioataca, int territoriodefiende){
+        
+        boolean ganar = false;
         
         //variable que identifica si el territorio que ataca pertenece al jugador
         //¿El territorio le pertenece al jugador?
@@ -37,6 +115,8 @@ public class Modelo {
 
         //variable auxiliar que guarda el indice del territorio que esta en la lista del jugador
         int indiceataca=0;
+        //variable auxiliar que guarda el indice del territorio que defiende
+        int indicedefiende=0;
         
         for(int i=0; i<j1.getNodos().size();i++)
         {
@@ -45,8 +125,13 @@ public class Modelo {
                 indiceataca = i;
                 ataca = true;
             }
-            else if(j2.getNodos().get(i).getId()==territoriodefiende)
+        }
+        
+        for(int i=0; i<j2.getNodos().size();i++)
+        {
+            if(j2.getNodos().get(i).getId()==territoriodefiende)
             {
+                indicedefiende = i;
                 defiende = true;
             }
         }
@@ -66,19 +151,18 @@ public class Modelo {
                     //si en la lista de vecinos esta el territorio que defiende ataca de lo contrario no
                     if(j1.getNodos().get(indiceataca).getVecinos().get(i).getId()==territoriodefiende)
                     {
-                        System.out.println("Siiiiiiiiiiiuuuuuu");
                         atacamos = true;
                     }
                 }
                 
                 //condicion que identifica si los territorios son vecinos
                 if(atacamos==true)
-                {
-                    
+                {                     
+                    ganar = pelear(indiceataca, indicedefiende);            
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(null, "Los territorios que deben ser vecinos");
+                    JOptionPane.showMessageDialog(null, "Los territorios deben ser vecinos");
                 }
             }
             else
@@ -94,6 +178,8 @@ public class Modelo {
         {
             JOptionPane.showMessageDialog(null, "El territorio que defiende le pertenece");
         }
+        
+        return ganar;
     }
     
     public void refuerzos(){
@@ -103,10 +189,12 @@ public class Modelo {
         ventana.label2.setText(""+nuevossoldados);
     }
     
-    public void planificar(int reservas, int indice, int cantidad){
+    public boolean planificar(int reservas, int indice, int cantidad){
 
-        //condicion para identificar si el territorio ingresado le pertenece o no
-        boolean pertenece = false;
+        //Sirve para determinar si el programa puede seguir o no, tambien identifica si el territorio ingresado le pertenece o no
+        //¿El territorio le pertenece al jugador?
+        //¿Podemos continuar?
+        boolean siguiente = false;
         
         for(int i=0; i<j1.getNodos().size();i++)
         {
@@ -116,8 +204,7 @@ public class Modelo {
                 j1.getNodos().get(i).setNumerodesoldados(j1.getNodos().get(i).getNumerodesoldados()+cantidad);
                 
                 //el territorio si le pertenece
-                pertenece = true;
-                
+                siguiente = true;
                 //actualizacion de vista y panel
                 ventana.label2.setText(""+(reservas-cantidad));
                 ventana.getPanel().setJ1(j1.getNodos());
@@ -129,10 +216,7 @@ public class Modelo {
             }
         }   
         
-        if(pertenece==false)
-        {
-            JOptionPane.showMessageDialog(null, "Ingrese un territorio que te pertenesca");
-        }
+        return siguiente;
     }
     
     public void crearjugador(){
