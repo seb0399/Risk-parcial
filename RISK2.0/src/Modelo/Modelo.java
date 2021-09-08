@@ -27,6 +27,73 @@ public class Modelo {
     
     public void atacar(int territorioataca, int territoriodefiende){
         
+        //variable que identifica si el territorio que ataca pertenece al jugador
+        //¿El territorio le pertenece al jugador?
+        boolean ataca = false;
+        
+        //variable que identifica si el territorio que defiende pertenece al enemigo
+        //¿El territorio le pertenece al enemigo?
+        boolean defiende = false;
+
+        //variable auxiliar que guarda el indice del territorio que esta en la lista del jugador
+        int indiceataca=0;
+        
+        for(int i=0; i<j1.getNodos().size();i++)
+        {
+            if(j1.getNodos().get(i).getId()==territorioataca)
+            {
+                indiceataca = i;
+                ataca = true;
+            }
+            else if(j2.getNodos().get(i).getId()==territoriodefiende)
+            {
+                defiende = true;
+            }
+        }
+        
+        if(ataca==true && defiende==true)
+        {
+            //si el territorio tiene solo un soldado no ataca
+            if(j1.getNodos().get(indiceataca).getNumerodesoldados()>1)
+            {
+                //variable que identifica si el territorio que ataca es vecino del territorio que defiende
+                //¿Podemos atacar?
+                boolean atacamos = false;
+        
+                //recorreos la lista de vecinos del territorio que ataca
+                for(int i=0;i<j1.getNodos().get(indiceataca).getVecinos().size();i++)
+                {
+                    //si en la lista de vecinos esta el territorio que defiende ataca de lo contrario no
+                    if(j1.getNodos().get(indiceataca).getVecinos().get(i).getId()==territoriodefiende)
+                    {
+                        System.out.println("Siiiiiiiiiiiuuuuuu");
+                        atacamos = true;
+                    }
+                }
+                
+                //condicion que identifica si los territorios son vecinos
+                if(atacamos==true)
+                {
+                    
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Los territorios que deben ser vecinos");
+                }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "No puedes atacar con solo un soldado");
+            }
+        }
+        else if(ataca==false)
+        {
+            JOptionPane.showMessageDialog(null, "El territorio que ataca no le pertenece");
+        }
+        else if(defiende==false)
+        {
+            JOptionPane.showMessageDialog(null, "El territorio que defiende le pertenece");
+        }
     }
     
     public void refuerzos(){

@@ -77,10 +77,22 @@ public class Controlador implements ActionListener{
         else if(e.getSource().equals(vista.btn2))
         {
             //condicion que verifica que los territorios ingresados esten dentro del rango 0-21
-            if(Integer.parseInt(vista.txt2.getText())>=0 || Integer.parseInt(vista.txt2.getText())<=21 && 
-                    Integer.parseInt(vista.txt2.getText())>=0 || Integer.parseInt(vista.txt2.getText())<=21)
+            if(Integer.parseInt(vista.txt1.getText())>=0 && Integer.parseInt(vista.txt1.getText())<=21 && 
+                    Integer.parseInt(vista.txt2.getText())>=0 && Integer.parseInt(vista.txt2.getText())<=21)
             {
-                modelo.atacar(Integer.parseInt(vista.txt1.getText()), Integer.parseInt(vista.txt2.getText()));
+                //verifica que los territorios no sean iguales
+                if(Integer.parseInt(vista.txt1.getText())==Integer.parseInt(vista.txt2.getText()))
+                {
+                    JOptionPane.showMessageDialog(null, "El territorio que quiere atacar es el mismo que defiende");
+                }
+                else
+                {
+                    modelo.atacar(Integer.parseInt(vista.txt1.getText()), Integer.parseInt(vista.txt2.getText()));
+                }
+            }
+            else 
+            {
+                JOptionPane.showMessageDialog(null, "Ingrese territorios que esten en el mapa");
             }
             
         }
@@ -88,6 +100,7 @@ public class Controlador implements ActionListener{
         {
             this.vista.btn4.setEnabled(false);
             
+            //leer declaracion de variables
             switch(fase)
             {
                 //Planificacion
@@ -100,8 +113,8 @@ public class Controlador implements ActionListener{
                     this.vista.btn2.setEnabled(true);
                     vista.label1.setText("");
                     vista.label2.setText("");
-                    vista.label3.setText("Territorio que ataca");
-                    vista.label4.setText("Territorio que defiende");
+                    vista.label3.setText("Indice Territorio que ataca");
+                    vista.label4.setText("Indice Territorio que defiende");
                 break;
                 
                 //Fortificacion
