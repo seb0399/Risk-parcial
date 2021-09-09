@@ -26,6 +26,46 @@ public class Modelo {
         this.territorio = new ArrayList<>();
     }  
     
+    public void fortificar(int partida, int llegada, int cantidad){
+        
+        boolean verificado = false;
+        boolean  condicion1= false;
+        boolean  condicion2= false;
+        int indicea=0;
+        int indiceb=0;
+        
+        for(int i=0; i<j1.getNodos().size();i++)
+        {
+            if(j1.getNodos().get(i).getId()==partida)
+            {
+                indicea=i;
+                condicion1=true;
+            }
+            else if(j1.getNodos().get(i).getId()==llegada)
+            {
+                indiceb=i;
+                condicion2=true;
+            }
+        }
+        if(condicion1==true && condicion2==true)
+        {
+          verificado = j1.getNodos().get(indicea).buscar(j1.getNodos().get(indiceb).getId());
+          
+          if(verificado == false)
+          {
+              JOptionPane.showMessageDialog(null, "El territorio de partida no tiene conexión con el territorio de llegada");
+          }else {
+              JOptionPane.showMessageDialog(null, "FUNCIONA¡ A POR LAS AREPITAS");
+          }
+          
+          
+        }else{
+             JOptionPane.showMessageDialog(null, "Uno de los dos territorios no te pertenece");
+        }
+        
+    
+        
+    }
     public boolean balancear(int soldadot1, int soldadot2)
     {
         boolean desbloquear = false;

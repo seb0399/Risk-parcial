@@ -100,4 +100,38 @@ public class Territorio {
         nodito.vecinos.add(this);
     }    
     
+    public boolean buscar(int llegada)
+    {
+        this.visita=true;
+        boolean encontrado=false;
+        
+        for(int i=0; i<vecinos.size();i++)
+        {
+            if(vecinos.get(i).getId()==llegada && this.getX()==vecinos.get(i).getX() && this.getY()==vecinos.get(i).getY() && this.getZ()==vecinos.get(i).getZ())
+            {
+                encontrado=true;    
+            }
+            
+        }
+        if(encontrado==false)
+        {
+             for(int i=0; i<vecinos.size();i++)
+            {
+                if(this.getX()==vecinos.get(i).getX() && this.getY()==vecinos.get(i).getY() && this.getZ()==vecinos.get(i).getZ() && !vecinos.get(i).isVisita())
+                {
+                    encontrado=vecinos.get(i).buscar(llegada);
+                    
+                    if(encontrado==true)
+                    {
+                        i=vecinos.size();
+                    }
+                    
+                }
+            
+            }
+        }
+        
+        return encontrado;   
+    }
+    
 }

@@ -26,6 +26,7 @@ public class Ventana extends JFrame{
     public JLabel label2 = new JLabel("");
     public JLabel label3 = new JLabel("Indice del territorio a fortalecer: ");
     public JLabel label4 = new JLabel("Cantidad de soldados a ingresar: ");
+    public JLabel label5 = new JLabel("");
     public JButton btn1 = new JButton("Planificar");
     public JButton btn2 = new JButton("Atacar");
     public JButton btn3 = new JButton("Fortificar");
@@ -33,6 +34,7 @@ public class Ventana extends JFrame{
     public JButton btn5 = new JButton("Balancear");
     public JTextField txt1 = new JTextField();
     public JTextField txt2 = new JTextField();
+    public JTextField txt3 = new JTextField();
     private Controlador c;
 
     
@@ -69,7 +71,12 @@ public class Ventana extends JFrame{
         this.panel.add(label4);
         this.txt2.setBounds(270,140,90,20);
         this.panel.add(txt2);
-
+        
+        this.label5.setBounds(60,185,200,20);
+        this.panel.add(label5);
+        this.txt3.setBounds(270,185,90,20);
+        this.panel.add(txt3);
+        
         this.btn1.setBounds(900, 60, 90, 20);
         this.panel.add(btn1);
 
@@ -84,6 +91,8 @@ public class Ventana extends JFrame{
         
         this.btn5.setBounds(1000, 140, 90, 20);
         this.panel.add(btn5);
+        
+        
 
         this.panel.setBounds(0, 720, 1280, 280);
         this.panel.setBackground(new Color(0,120,240));
@@ -104,21 +113,9 @@ public class Ventana extends JFrame{
        return this.fondo;
    }
 
-    public void updateLabel1(String s){
-        this.label1.setText(s);
-    }
-
-    public void updateLabel2(String s){
-        this.label2.setText(s);
-    }
     
-    public void updateLabel3(String s){
-        this.label3.setText(s);
-    }
     
-    public void updateLabel4(String s){
-        this.label4.setText(s);
-    }
+   
     
 }
  

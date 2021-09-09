@@ -32,6 +32,7 @@ public class Controlador implements ActionListener{
         this.vista.btn3.setEnabled(false);
         this.vista.btn4.setEnabled(false);
         this.vista.btn5.setEnabled(false);
+        this.vista.txt3.setEnabled(false);
         this.fase=1;
         modelo.creargrafo();
         modelo.refuerzos();
@@ -129,6 +130,10 @@ public class Controlador implements ActionListener{
                 this.vista.btn4.setEnabled(true);
             }
         }
+        else if (e.getSource().equals(vista.btn3))
+        {
+            modelo.fortificar(Integer.parseInt(vista.txt1.getText()),Integer.parseInt(vista.txt2.getText()),Integer.parseInt(vista.txt3.getText()));
+        }
         else if(e.getSource().equals(vista.btn4))
         {
             fase++;
@@ -161,6 +166,8 @@ public class Controlador implements ActionListener{
                     vista.label2.setText("");
                     vista.label3.setText("Mover de ");
                     vista.label4.setText("Mover hacia ");
+                    vista.label5.setText("Cantidad de soldados a mover ");
+                    this.vista.txt3.setEnabled(true);
                 break;
                 
                 default:
@@ -168,6 +175,7 @@ public class Controlador implements ActionListener{
                 break;
                 
             }
+            
         }
     }
 }
