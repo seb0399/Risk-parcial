@@ -112,10 +112,4 @@ public class Ventana extends JFrame{
    public FondoPanel getPanel(){
        return this.fondo;
    }
-
-    
-    
-   
-    
 }
- 
