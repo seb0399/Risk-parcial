@@ -196,7 +196,7 @@ public class Controlador implements ActionListener{
                 por lo cual se bloquean todos los botones*/
                 if(modelo.getJ1().getNodos().size()==22)
                 {
-                    JOptionPane.showMessageDialog(null, "Has Gadado :D"); 
+                    JOptionPane.showMessageDialog(null, "Has Ganado :D"); 
                        
                     this.vista.btn1.setEnabled(false);
                     this.vista.btn2.setEnabled(false);
@@ -215,48 +215,74 @@ public class Controlador implements ActionListener{
                 JOptionPane.showMessageDialog(null,"Ingrese valores numericos en las cajas de texto");
             }                 
         }
+        //Fortalecer
         else if (e.getSource().equals(vista.btn3))
         {
-            if(Integer.parseInt(vista.txt1.getText())>21 || Integer.parseInt(vista.txt1.getText())<0 || 
+            //Try-Catch por si el usuario no ingresa valores numericos en las cajas de texto
+            try
+            {
+                //Condicion que verifica que el jugador no halla ingresado territorio que no esten en el mapa
+                if(Integer.parseInt(vista.txt1.getText())>21 || Integer.parseInt(vista.txt1.getText())<0 || 
                     Integer.parseInt(vista.txt2.getText())>21 || Integer.parseInt(vista.txt2.getText())<0)
-            {
-                JOptionPane.showMessageDialog(null, "Ingrese territorios que esten en el mapa");
-            }
-            else
-            {
-                if(Integer.parseInt(vista.txt3.getText())<0)
                 {
-                    JOptionPane.showMessageDialog(null, "Ingrese valores positivos");
-                }
-                else if(Integer.parseInt(vista.txt3.getText())==0)
-                {
-                    JOptionPane.showMessageDialog(null, "¿Por que quisieras trasladar 0 soldados?");
-                }
-                else if(Integer.parseInt(vista.txt1.getText())==Integer.parseInt(vista.txt2.getText()))
-                {
-                    JOptionPane.showMessageDialog(null, "El territorio de llegada es igual al territorio de partida");
+                    JOptionPane.showMessageDialog(null, "Ingrese territorios que esten en el mapa");
                 }
                 else
                 {
-                    boolean siguienteetapa = modelo.fortificar(Integer.parseInt(vista.txt1.getText()),Integer.parseInt(vista.txt2.getText()),Integer.parseInt(vista.txt3.getText()));
-                    
-                    if(siguienteetapa==true)
+                    //Condicion que verifica que la cantidad de soldados a trasladar sea superior a 0
+                    if(Integer.parseInt(vista.txt3.getText())<0)
                     {
-                        JOptionPane.showMessageDialog(null, "Etapa de fortificacion terminada, pulse el boton siguiente para continuar");
-                        this.vista.txt1.setText("");
-                        this.vista.txt2.setText("");
-                        this.vista.txt3.setText("");
-                        this.vista.label5.setText("");
-                        this.vista.btn3.setEnabled(false);
+                        JOptionPane.showMessageDialog(null, "Ingrese valores positivos");
+                    }
+                    else if(Integer.parseInt(vista.txt3.getText())==0)
+                    {
+                        JOptionPane.showMessageDialog(null, "¿Por que quisieras trasladar 0 soldados?");
+                    }
+                    else if(Integer.parseInt(vista.txt1.getText())==Integer.parseInt(vista.txt2.getText()))
+                    {   
+                        JOptionPane.showMessageDialog(null, "El territorio de llegada es igual al territorio de partida");
+                    }
+                    else
+                    {
+                        /*Llamado al metodo foritficar de la clase modelo 
+                    
+                        EL metodo retorna un valor booleano para verificar si el jugador traslado soldados de manera adecuada
+                        
+                        Si el jugador realizo la accion correctamente el juego lo obliga a pasar de etapa.
+                        
+                        Si el jugador no realizo la accion correctamente el juego permite que reingrese los datos o pase de etapa.
+                    
+                        Al metodo se le envia:
+                    
+                        Indice del territorio que envia soldados
+                        Indice del territorio que recibe soldados
+                        Cantidad de soldados a trasladar*/
+                        
+                        boolean siguienteetapa = modelo.fortificar(Integer.parseInt(vista.txt1.getText()),
+                             Integer.parseInt(vista.txt2.getText()),Integer.parseInt(vista.txt3.getText()));
+                        
+                        //Condicion que verifica que el jugador halla realizado la accion correctamente
+                        if(siguienteetapa==true)
+                        {
+                            JOptionPane.showMessageDialog(null, "Etapa de fortificacion terminada, pulse el boton siguiente para continuar");
+                            this.vista.txt1.setText("");
+                            this.vista.txt2.setText("");
+                            this.vista.txt3.setText("");
+                            this.vista.label5.setText("");
+                            this.vista.btn3.setEnabled(false);
+                        }
                     }
                 }
+            }catch(Exception a){
+                JOptionPane.showMessageDialog(null,"Ingrese valores numericos en las cajas de texto");
             }
         }
+        //Continuar
         else if(e.getSource().equals(vista.btn4))
         {
+            //Indica que fase del juego continua cada vez que el jugador pulsa el boton continuar
             fase++;
             
-            //leer declaracion de variables
             switch(fase)
             {
                 //Planificacion
@@ -295,12 +321,18 @@ public class Controlador implements ActionListener{
                     this.vista.txt3.setEnabled(true);
                 break;
                 
+                //La maquina juega
                 case 4:
                     this.vista.txt3.setEnabled(false);
                     this.vista.btn3.setEnabled(false);
                     JOptionPane.showMessageDialog(null, "Turno del enemigo");
+                    
+                    /*Llamado al metodo maquina de la clase modelacion
+                    
+                    Retorna un valor booleano que indica si la maquina perdio o no*/
                     boolean perder = modelo.maquina();
                     
+                    //Condicion que verifica si la maquina perdio o no
                     if(perder==true)
                     {
                         this.vista.btn1.setEnabled(false);
@@ -317,6 +349,8 @@ public class Controlador implements ActionListener{
                         
                     }
                     else{
+                        /*Si la maquina no perdio la variable se reinica para
+                          reiniciar el proceso*/
                         fase=0;
                     }
                 break;

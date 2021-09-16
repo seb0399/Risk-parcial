@@ -191,29 +191,47 @@ public class Territorio {
         return amarilloazul;
     }
     
+    /*El metodo recibe
+                    
+      Indice del territorio que recibe soldados*/
+    
     public boolean buscar(int llegada)
     {
+        //Variable local que establece que este territorio ha sido visitado en la busqueda
         this.visita=true;
+        //Variable que indica si el trritorio a buscar fue encontrado
         boolean encontrado=false;
         
+        //Se recorre la lista de vecinos del territorio indicado
         for(int i=0; i<vecinos.size();i++)
         {
+            //Si en la lista se encuetra al territorio de llegada y comparten colores entra a la condicion
             if(vecinos.get(i).getId()==llegada && this.getX()==vecinos.get(i).getX() && this.getY()==vecinos.get(i).getY() && this.getZ()==vecinos.get(i).getZ())
             {
+                //El territorio de llegada fue encontrado
                 encontrado=true;    
             }
             
         }
+        
+        //Si el territorio no fue encontrado se realiza otro procedimiento
         if(encontrado==false)
         {
-             for(int i=0; i<vecinos.size();i++)
+            //Nuevamente se recorre la lista de vecinos del territorio
+            for(int i=0; i<vecinos.size();i++)
             {
+                //Si el vecino comparte territorio entra al a condicion
                 if(this.getX()==vecinos.get(i).getX() && this.getY()==vecinos.get(i).getY() && this.getZ()==vecinos.get(i).getZ() && !vecinos.get(i).isVisita())
                 {
+                    /*Se llama al metodo buscar del territorio vecino (recuerdece que el metodo
+                    retorna un boolean que indica si el territorio de llegada fue encontrado*/
+                    
                     encontrado=vecinos.get(i).buscar(llegada);
                     
+                    //Si el territorio de llegada fue encnrado se entra a la condicion
                     if(encontrado==true)
                     {
+                        //Se rompe el for para dejar de buscar
                         i=vecinos.size();
                     }
                     
@@ -222,6 +240,7 @@ public class Territorio {
             }
         }
         
+        //Se retorna la variable que indica si el territorio de llegada fue encontrado
         return encontrado;   
     }
     

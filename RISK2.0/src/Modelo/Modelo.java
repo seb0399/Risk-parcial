@@ -26,11 +26,18 @@ public class Modelo {
         this.territorio = new ArrayList<>();
     }  
     
+    /**
+     * Función maquina
+     * este método contiene los algoritmos necesarios para que la maquina haga
+     * sus movimientos en pantalla.
+     * @return 
+     */
     public boolean maquina(){
         
         boolean perder = false;
         
         //Planificar
+        // Una variable aleatoria hara que la maquina determine el territorio a fortificar en su primera etapa
         int indice = (int) (Math.random()*(j2.getNodos().size()-1)+0);     
         j2.getNodos().get(indice).setNumerodesoldados(j2.getNodos().get(indice).getNumerodesoldados()+j2.getNodos().size());
         ventana.getPanel().setJ2(j2.getNodos());
@@ -39,14 +46,21 @@ public class Modelo {
         JOptionPane.showMessageDialog(null, "El enemigo ha terminado de planificar");
         
         //Atacar
+        // Se añade una variable aleatoria que proporcionara una probabilidad de que la maquina no ataque
         int seguiratacando = (int)(Math.random()*(4-1+1)+1);
         
+        //Si la variable es igual a 1, la maquina no atacara
+        if(seguiratacando==1)
+        {
+            JOptionPane.showMessageDialog(null, "El enemigo ha decidido no atacar");
+        }
+        //Mientras la variable sea mayor a 1 la maquina seguira atacando
         while(seguiratacando>1)
         {        
             
             int max=0;
             int indiceamarillo=0;
-        
+        //El for tomara el tamaño de los nodos amarillos y evaluara las condiciones para el ataque
             for(int i=0; i<j2.getNodos().size();i++)
             {
                 if(j2.getNodos().get(i).vecinoenemigo()==true && j2.getNodos().get(i).getNumerodesoldados()>max)
@@ -55,9 +69,9 @@ public class Modelo {
                     indiceamarillo = i;
                 }
             }
-        
+        //La variable almacenara el nodo enemigo más debil mediante el método de enemigodebil 
             int enemigo = j2.getNodos().get(indiceamarillo).enemigodebil();
-        
+        //variable que tomara la posición del nodo debil para ser reemplazada 
             int indiceazul=0;
         
             for(int i=0; i<j1.getNodos().size();i++)
@@ -74,11 +88,13 @@ public class Modelo {
                 JOptionPane.showMessageDialog(null, "El enemigo piensa atacar tu territorio "+j1.getNodos().get(indiceazul).getId()+" con el territorio "+j2.getNodos().get(indiceamarillo).getId());
         
                 //pelea
-            
+                //La maquina después de evaluarlas condiciones del ataque empezara a restarle a los nodos azules para tomar el territorio
                 boolean salir = false;
         
                 do
                 {
+                    //Se generan 2 variables, el total y el dado que determinara la probabilidad de ganar de algun equipo
+                    //Esta función hará que se determine si gana el atacante o el defensor
                     int total = j2.getNodos().get(indiceamarillo).getNumerodesoldados()+j1.getNodos().get(indiceazul).getNumerodesoldados();
                     int dado = (int) (Math.random()*(total-1)+0);
             
@@ -98,6 +114,7 @@ public class Modelo {
                         salir = true;
                         JOptionPane.showMessageDialog(null, "Has ganado la batalla");
                     }
+                    //Cuando el número de soldados azules del nodo sea 0, se perdera el territorio y habra ganado la maquina
                     else if(j1.getNodos().get(indiceazul).getNumerodesoldados()==0)
                     {
                         salir = true;
@@ -117,7 +134,7 @@ public class Modelo {
                 ventana.getPanel().setJ1(j1.getNodos());
                 ventana.getPanel().setJ2(j2.getNodos());
                 ventana.getPanel().repaint();
-                
+                //Se repetira la probabilidad de que la maquina siga atacando
                 seguiratacando = (int)(Math.random()*(2-1+1)+1);
             }
             else
@@ -126,7 +143,7 @@ public class Modelo {
             }
             
         }
-        
+        //Si todos los nodos son amarillos el jugador azul habra perdido
         if(j2.getNodos().size()==22)
         {
             perder = true;
@@ -135,7 +152,7 @@ public class Modelo {
         else
         {
             //Fortalecer
-        
+            // después del ataque la maquina evaluara un nodo debil al cual fortalecer
             int indicequefortifica = 0;
             boolean fortifica = false;
         
@@ -149,9 +166,10 @@ public class Modelo {
                     i = j2.getNodos().size();
                 } 
             }
-        
+            //Condicional que evaluara si la maquina fortifica o no sus territorios
             if(fortifica==true)
             {
+                //Se crean variables auxiliares que ayudaran a determinar el nodo más debil que se fortificara
                 int contadoraux=0;
                 int indiceafortificar=0;
                 int menorsoldados = 0;
@@ -173,7 +191,7 @@ public class Modelo {
                         menorsoldados = j2.getNodos().get(i).getNumerodesoldados();
                     }
                 }
-            
+            //Después de evaluado el nodo más debil, la maquina sumara a ese nodo y restara de uno a su elección
                 JOptionPane.showMessageDialog(null, "El enemigo fortifica su territorio "+j2.getNodos().get(indiceafortificar).getId()+" con soldados del territorio "+j2.getNodos().get(indicequefortifica).getId());
                 j2.getNodos().get(indiceafortificar).setNumerodesoldados(j2.getNodos().get(indiceafortificar).getNumerodesoldados()+(j2.getNodos().get(indicequefortifica).getNumerodesoldados()-1));
                 j2.getNodos().get(indicequefortifica).setNumerodesoldados(1);
@@ -186,44 +204,71 @@ public class Modelo {
             JOptionPane.showMessageDialog(null, "El enemigo no fortifica");
             }
         }
-        
+        // Retornara perder al cabo de que el usuario haya perdido todos sus soldados 
         return perder;
     }
     
+    /*El metodo recibe
+                    
+      Indice del territorio que envia soldados
+      Indice del territorio que recibe soldados
+      Cantidad de soldados a trasladar*/
+    
     public boolean fortificar(int partida, int llegada, int cantidad){
         
+        //Variable que determina si el usuario fortifico de manera correcta
         boolean siguienteetapa = false;
+        //Variable que determina los territorios ingresados estan conectados 
         boolean verificado = false;
+        //Variable que determina si el territorio de partida le pertenece al jugador 1 (Usuario)
         boolean  condicion1= false;
+        //Variable que determina si el territorio de llegada le pertenece al jugador 1 (Usuario)
         boolean  condicion2= false;
+        //Variable que guarda el indice de la lista donde se encuentra el territorio de partida
         int indicea=0;
+        //Variable que guarda el indice de la lista donde se encuentra el territorio de llegada
         int indiceb=0;
         
+        /*For que recorre la lista del jugador 1 (Usuario) para verificar si los territorios ingresados
+          le pertenecen al jugador 1*/
         for(int i=0; i<j1.getNodos().size();i++)
         {
             if(j1.getNodos().get(i).getId()==partida)
             {
+                //El territorio de partida si le pertenece
                 indicea=i;
                 condicion1=true;
             }
-            else if(j1.getNodos().get(i).getId()==llegada)
+            
+            if(j1.getNodos().get(i).getId()==llegada)
             {
+                //El territorio de llegada si le pertenece
                 indiceb=i;
                 condicion2=true;
             }
         }
         
+        //Condicion que verifica que los dos territorios le pertenescan a el jugador 1 (Usuario)
         if(condicion1==true && condicion2==true )
         {
+            /*Llamado al metodo buscar de la clase Territorio
+            
+             EL metodo por medio de la recursividad retorna un booleano que indica si los
+             territorios estan conectados o no
+            
+             Al metodo se le envia el indice del territorio de llegada */
+            
           verificado = j1.getNodos().get(indicea).buscar(j1.getNodos().get(indiceb).getId());
           
+          //Condicion que verifica si los territorios estan conectados
           if(verificado == false)
           {
             JOptionPane.showMessageDialog(null, "El territorio de partida no tiene conexión con el territorio de llegada");
           }
           else 
           {
-              
+            /*Condicion que verifica que el jugador 1 (Usuario) no ingrese valores superiores o inferiores a 
+              los que puede trasladar*/
             if((j1.getNodos().get(indicea).getNumerodesoldados()-cantidad)<1)
             {
                   JOptionPane.showMessageDialog(null, "Del territorio "+partida+" al "+llegada+" no puede trasladar mas de "+(j1.getNodos().get(indicea).getNumerodesoldados()-1)+" soldados");
@@ -234,26 +279,32 @@ public class Modelo {
             }
             else
             {
+                //El jugador 1 (Usuario) foritfico de manera adecuada, puede pasar a la siguiente etapa
                 siguienteetapa = true;
+                
+                //Se actualizan los territorios con la cantidad de soldados correspondiente
                 j1.getNodos().get(indicea).setNumerodesoldados(j1.getNodos().get(indicea).getNumerodesoldados()-cantidad);
                 j1.getNodos().get(indiceb).setNumerodesoldados(j1.getNodos().get(indiceb).getNumerodesoldados()+cantidad);
               
+                //Se actualiza el panel
                 ventana.getPanel().setJ1(j1.getNodos());
                 ventana.getPanel().setJ2(j2.getNodos());
                 ventana.getPanel().repaint();  
             }   
-              
+          }
+            /*Se recorre la lista de territorios del jugador 1 ( Usuario) seteando la variable visitado
+              como falso para que la busqueda se pueda realizar nuevamente sin problemas*/
             for(int i=0; i<j1.getNodos().size();i++)
             {
                 j1.getNodos().get(i).setVisita(false);
             }
-          }
-          
-          
-        }else{
+           
+        }
+        else{
              JOptionPane.showMessageDialog(null, "Uno de los dos territorios no te pertenece");
         }
         
+        //Se retorna la variable siguiente etapa que determina si el jugador 1 (Usuario) puede pasar a la siguiente etapa
         return siguienteetapa; 
     }
     
@@ -487,9 +538,10 @@ public class Modelo {
     }
     
     public void refuerzos(){
-               
+        //Variable que calcula el numero de refuerzos que tiene cada jugador (varia segun el numero de territorios que tenga)
         int nuevossoldados = j1.getNodos().size();
         JOptionPane.showMessageDialog(null, "Has recibido "+nuevossoldados+" soldados");
+        //Actualiza el label de la ventana
         ventana.label2.setText(""+nuevossoldados);
     }
     
@@ -530,10 +582,12 @@ public class Modelo {
         return siguiente;
     }
     
+     //Metodo que reparte los territorios del mapa
     public void crearjugador(){
         
         ArrayList<Territorio> copia = territorio;
         
+        //Se añaden territorios al azar al jugador 1 (Usuario)
         for(int i=0; i<11;i++)
         {
             int indice = (int) (Math.random()*(copia.size()-1)+1);
@@ -542,13 +596,14 @@ public class Modelo {
             copia.remove(indice);
         }
         
+        //Se añaden territorios al azar al jugador 2 (Maquina)
         for(int i=0; i<copia.size();i++)
         {
             j2.añadirterritorio(copia.get(i));
             j2.color(i);
         }
 
-        
+        //Se actualiza el panel
         ventana.getPanel().setJ1(j1.getNodos());
         ventana.getPanel().setJ2(j2.getNodos());
         ventana.getPanel().repaint();   
@@ -557,14 +612,17 @@ public class Modelo {
     }
     
     public void creargrafo(){
-        
+        //El for crea 22 territorios que contienen soldados entre 1 y 4
         for(int i=0; i<22; i++ )
         {
             int soldados = (int) (Math.random()*(4-1)+1);
             Territorio t = new Territorio(i,soldados);
+            //El nuevo territorio se añade a una lista global de territorios
             territorio.add(t);
         }
         
+        /*Uno por uno se indica cuales son los vecinos de cada territorio,
+          esto se hace por medio del metodo agregarvecino de la clase territorio*/
         territorio.get(0).agregarvecino(territorio.get(1));
         territorio.get(0).agregarvecino(territorio.get(6));
         territorio.get(0).agregarvecino(territorio.get(15));
@@ -647,6 +705,7 @@ public class Modelo {
         crearjugador();
     }
 
+    //Metodo que retorna el jugador 1 junto a su informacion
     public jugador getJ1() {
         return j1;
     }
