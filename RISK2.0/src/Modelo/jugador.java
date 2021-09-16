@@ -13,7 +13,9 @@ import java.util.ArrayList;
  */
 public class jugador {
     
+    //Color del jugador
     private int x,y,z;
+    //Lista de territorios que posee el jugador
     private ArrayList<Territorio> nodos = new ArrayList<Territorio>();
 
     public jugador(int x, int y, int z) {
@@ -54,6 +56,7 @@ public class jugador {
         this.nodos = nodos;
     }
 
+    /*El metodo recibe el indice de la lista de territorios que sera seteado*/
     public void color(int i){
         this.nodos.get(i).setX(this.x);
         this.nodos.get(i).setY(this.y);
